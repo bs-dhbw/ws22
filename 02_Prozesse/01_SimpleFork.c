@@ -1,44 +1,32 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 
 int main(void)
 {
-    printf("PROGRAMMSTART\n");
+    printf("Hello World...\n");
 
-    int counter = 0;
     pid_t pid = fork();
 
     if (pid == 0)
     {
-        // Hier befinden wir uns im Kindprozess
-        int i = 0;
-        for (; i < 4; ++i)
-        {
-            printf("            PID: %d; ", getpid());
-            printf("Kindprozess: counter=%d\n", ++counter);
-        }
+      /* Child process */
+      printf("Inside child - PID: %d\n", getpid());
     }
     else if (pid > 0)
     {
-        // Hier befinden wir uns im Elternprozess
-        
-	printf("pid of child: %d\n",pid);
-
-	int j = 0;
-        for (; j < 4; ++j)
-        {
-            printf("PID: %d; ", getpid());
-            printf("Elternprozess: counter=%d\n", ++counter);
-        }
+      /* Parent process */
+      printf("Inside parent - PID of child process: %d\n", pid);
+      printf("Inside parent - PID: %d\n", getpid());        
     }
     else
     {
-        // Fehler bei fork()
-        printf("fork() fehlgeschlagen!\n");
-        return 1;
+      /* Error durring fork() */
+      printf("fork() failed!\n");
+      return EXIT_FAILURE;
     }
 
-    printf("PROGRAMMENDE\n");
+    printf("Bye World...\n");
 
-    return 0;
+    return EXIT_SUCCESS;
 }
