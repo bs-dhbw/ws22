@@ -1,30 +1,41 @@
+#include <pthread.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
 #include <unistd.h>
 
-void *ThreadHello( void *arg) {
-    printf("Hello");
-    pthread_exit(0);
+bool HelloDone = false;
+
+void *ThreadHello(void *arg) {
+  printf("Hello");
+  sleep(100);
+  HelloDone = true;
+  pthread_exit(0);
 }
 
-void *ThreadWorld( void *arg) {
-    printf("World\n");
-    pthread_exit(0);
+void *ThreadWorld(void *arg) {
+  while (HelloDone != true) {
+    // Spinnlock
+    // wait
+    printf("wait...\n");
+  }
+  printf("World\n");
+  pthread_exit(0);
 }
 
-int main (void) 
-{
-    pthread_t ThreadIdHello;
-    pthread_t ThreadIdWorld; 
-    
-    /* Fire up Hello thread and wait until complete */ 
-    pthread_create(&ThreadIdHello, NULL, ThreadHello, NULL);
-    pthread_join(ThreadIdHello, NULL);
+int main(void) {
+  pthread_t ThreadIdHello;
+  pthread_t ThreadIdWorld;
 
-    /* Fire up World thread and wait until complete */ 
-    pthread_create(&ThreadIdWorld, NULL, ThreadWorld, NULL);
-    pthread_join(ThreadIdWorld, NULL);
+  /* Fire up Hello thread and wait until complete */
+  pthread_create(&ThreadIdHello, NULL, ThreadHello, NULL);
+  /* Fire up World thread and wait until complete */
+  pthread_create(&ThreadIdWorld, NULL, ThreadWorld, NULL);
 
-    exit(0);
+  usleep(100);
+
+  pthread_join(ThreadIdWorld, NULL);
+  pthread_join(ThreadIdHello, NULL);
+
+  exit(0);
 }

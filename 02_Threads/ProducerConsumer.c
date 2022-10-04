@@ -12,7 +12,7 @@
 #define KGRN "\x1B[32m"
 #define KRST "\x1B[0m"
 
-#define MAX_NR_PRODUCER 1
+#define MAX_NR_PRODUCER 3
 #define MAX_NR_CONSUMER 1
 #define MAX_NR_ELEMENTS 10
 
