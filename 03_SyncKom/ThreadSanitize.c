@@ -1,20 +1,20 @@
 #include <pthread.h>
 #include <stdio.h>
- 
-/* clang race.cc -fsanitize=thread -fPIE -pie -g */
- 
+
+/* clang ThreadSanitize.cc -fsanitize=thread -fPIE -pie -g */
+
 int Global;
- 
+
 void *Thread1(void *x) {
   Global++;
   return NULL;
 }
- 
+
 void *Thread2(void *x) {
   Global--;
   return NULL;
 }
- 
+
 int main() {
   pthread_t t[2];
   pthread_create(&t[0], NULL, Thread1, NULL);
@@ -22,4 +22,3 @@ int main() {
   pthread_join(t[0], NULL);
   pthread_join(t[1], NULL);
 }
- 
