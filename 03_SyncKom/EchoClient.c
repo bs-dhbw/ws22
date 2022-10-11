@@ -15,10 +15,11 @@ int main(int argc, char **argv) {
   bzero(&servaddr, sizeof servaddr);
 
   servaddr.sin_family = AF_INET;
-  servaddr.sin_port = htons(22000);
+  servaddr.sin_port = htons(4444);
 
   inet_pton(AF_INET, "127.0.0.1", &(servaddr.sin_addr));
 
+  printf("Connect to server...\n");
   connect(sockfd, (struct sockaddr *)&servaddr, sizeof(servaddr));
 
   while (1) {
